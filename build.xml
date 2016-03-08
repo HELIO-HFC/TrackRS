@@ -1,0 +1,56 @@
+<project name="Track_RS" default="dist">
+  <description>
+    Building Track_RS.jar 
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="classes"/>
+  <property name="dist"  location="bin"/>
+  <property name="lib"  location="lib"/>
+  
+  <path id="tracking.class.path">  
+    <fileset dir="lib" includes="*.jar"/>
+  </path>
+ 
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+  
+  <target name="compile" depends="init"
+	  description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}">
+      <classpath refid="tracking.class.path"/>
+    </javac>	
+  </target>
+  
+  <target name="dist" depends="compile"
+	  description="generate the distribution" >
+    
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+    
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/Track_RS.jar" basedir="${build}">    	
+      <archives>
+	<zips>
+	  <fileset dir="${lib}" includes="**/*.jar"/>
+	</zips>
+      </archives>
+      <manifest>
+	<attribute
+	   name="Main-Class"
+	   value="Track_RS"/>
+      </manifest> 
+    </jar>
+  </target>
+    <target name="clean"
+         description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
